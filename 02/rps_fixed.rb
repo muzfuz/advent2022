@@ -14,9 +14,9 @@ class RockPaperScissorFixed
   }
 
   RULES = {
-    ROCK    => SCISSOR,
-    PAPER   => ROCK,
-    SCISSOR => PAPER,
+    ROCK    => SCISSOR, # Rock beats scissor
+    PAPER   => ROCK,    # Paper beats Rock
+    SCISSOR => PAPER,   # Scissor beats paper
   }
   
   def initialize(file)
