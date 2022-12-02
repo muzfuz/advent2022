@@ -1,0 +1,14 @@
+# Classes
+class RockPaperScissor
+  LOSS: Integer
+  DRAW: Integer
+  WIN: Integer
+  RULES: Hash[String, String]
+  MAPPING: Hash[String, String]
+  MODIFIER: Hash[String, Integer]
+  @file: string
+
+  def initialize: (String file) -> void
+  def your_score: -> Integer
+  def play_round: (Array[String] hands) -> Integer
+end
