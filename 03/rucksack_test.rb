@@ -11,6 +11,10 @@ class RucksackTest < Test::Unit::TestCase
     assert(@rucksack.sum_priority == 157, "Assert total priorities sum up to 157")
   end
 
+   def test_sum_badges
+    assert(@rucksack.sum_badges == 70, "Assert total priorities of badges sums to 70")
+   end
+
   def test_priorities
     [
       ["p", 16],
@@ -23,6 +27,8 @@ class RucksackTest < Test::Unit::TestCase
       assert @rucksack.priority_for(pair.first) == pair.last, "Letter #{pair.first} should equal #{pair.last}"
     end
   end
+
+ 
 
   def test_rucksack_compartments
     expected_compartments = [
