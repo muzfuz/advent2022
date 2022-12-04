@@ -38,6 +38,7 @@ class Rucksack
   end
 
   def contents
+    # Turn each line into an array of characters
     @_contents ||= File.readlines(@file).map do |line|
       line
         .strip
