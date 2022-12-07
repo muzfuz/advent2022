@@ -35,4 +35,18 @@ class StacksTest < Test::Unit::TestCase
   def test_top_crates
     assert(@stacks.top_crates == "CMZ", "The top crates are correctly returned")
   end
+
+  def test_arrange_9001
+    expected_arrangement = {
+      1 => ["M"],
+      2 => ["C"],
+      3 => ["P", "Z", "N", "D"],
+    }
+    @stacks.arrange_9001!
+    assert(@stacks.crates == expected_arrangement, "The crane arranges correctly")
+  end
+
+  def test_top_crates_9001
+    assert(@stacks.top_crates_9001 == "MCD", "The top crates are correctly returned")
+  end
 end

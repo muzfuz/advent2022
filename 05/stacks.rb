@@ -18,6 +18,17 @@ class Stacks
     end
   end
 
+  def top_crates_9001
+    arrange_9001!
+    crates.each_value.map { |crate| crate.last }.join
+  end
+
+  def arrange_9001!
+    instructions.each do |instruction|
+      crates[instruction[2]].concat(crates[instruction[1]].pop(instruction[0]))
+    end
+  end
+
   def instructions
     @_instructions ||= File.readlines(@file).map do |line|
       line.scan(/\d+/).map(&:to_i)
