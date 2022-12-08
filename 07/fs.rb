@@ -1,11 +1,18 @@
 class FileSystem
+
+  TOTAL_MEMORY = 70000000
+  MIN_MEMORY = 30000000
+
   def initialize(file)
     @file = file
     @current_directory = String.new
+    process
   end
 
+  attr_reader :directories
+
   def process
-    dir_sizes = Hash.new(0)
+    @directories = Hash.new(0)
     commands.each do |cmd|
       if cmd.include?("$ cd")
         target = cmd.split.last
@@ -21,25 +28,31 @@ class FileSystem
         next
       else
         size = cmd.split.first.to_i
-        dir_sizes[@current_directory] += size
+        @directories[@current_directory] += size
         dirs = @current_directory.split("/").reject(&:empty?)
         dirs.size.times do
           dirs.pop
           if dirs.empty?
-            dir_sizes["/"] += size
+            @directories["/"] += size
           else
-            dir_sizes["/#{dirs.join("/")}/"] += size
+            @directories["/#{dirs.join("/")}/"] += size
           end
         end
       end
     end
-    dir_sizes
   end
 
   def sum_large_dirs
-    process.each_value.select do |size|
+    directories.each_value.select do |size|
       size <= 100000
     end.sum
+  end
+
+  def free_up_memory
+    required_additional_memory = MIN_MEMORY - (TOTAL_MEMORY - directories["/"])
+    directories.values.sort.find do |size|
+      size >= required_additional_memory
+    end
   end
 
   def commands
