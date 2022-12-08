@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+
+require_relative "./fs"
+
+@fs = FileSystem.new("./input.txt")
+
+require "irb"
+IRB.start(__FILE__)
