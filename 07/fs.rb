@@ -5,39 +5,45 @@ class FileSystem
 
   def initialize(file)
     @file = file
-    @current_directory = String.new
+    @directories = Hash.new(0)
     process
   end
 
   attr_reader :directories
 
   def process
-    @directories = Hash.new(0)
+    current_directory = String.new
     commands.each do |cmd|
       if cmd.include?("$ cd")
-        target = cmd.split.last
-        if target == ".."
-          @current_directory = @current_directory.split("/")[0..-2].join("/") + "/"
-          @current_directory = "/" if @current_directory.empty?
-        elsif target == "/"
-          @current_directory = "/"
-        else
-          @current_directory = @current_directory.concat("#{target}/")
-        end
+        current_directory = cd(cmd.split.last, current_directory)
       elsif cmd.include?("$ ls")
         next
       else
-        size = cmd.split.first.to_i
-        @directories[@current_directory] += size
-        dirs = @current_directory.split("/").reject(&:empty?)
-        dirs.size.times do
-          dirs.pop
-          if dirs.empty?
-            @directories["/"] += size
-          else
-            @directories["/#{dirs.join("/")}/"] += size
-          end
-        end
+        add_file_size_to_dir(cmd.split.first.to_i, current_directory)
+      end
+    end
+  end
+
+  def cd(target, current_directory)
+    case target
+    when "/" || current_directory.empty?
+      "/"
+    when ".."
+      current_directory.split("/")[0..-2].join("/") + "/"
+    else
+      current_directory.concat("#{target}/")
+    end
+  end
+
+  def add_file_size_to_dir(size, current_directory)
+    directories[current_directory] += size
+    dirs = current_directory.split("/").reject(&:empty?)
+    dirs.size.times do
+      dirs.pop
+      if dirs.empty?
+        directories["/"] += size
+      else
+        directories["/#{dirs.join("/")}/"] += size
       end
     end
   end
