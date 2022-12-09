@@ -20,6 +20,7 @@ class FileSystem
         next
       else
         add_file_size_to_dir(cmd.split.first.to_i, current_directory)
+        add_file_size_to_parent_dirs(cmd.split.first.to_i, current_directory)
       end
     end
   end
@@ -37,6 +38,9 @@ class FileSystem
 
   def add_file_size_to_dir(size, current_directory)
     directories[current_directory] += size
+  end
+
+  def add_file_size_to_parent_dirs(size, current_directory)
     dirs = current_directory.split("/").reject(&:empty?)
     dirs.size.times do
       dirs.pop
